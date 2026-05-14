@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# runtime/cache artifacts
+last_usage.json
+widget_config.json
+widget_start.log
+screen_check*.png
+
+# local debug helpers
+unlock_try.ps1
