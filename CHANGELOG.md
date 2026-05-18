@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+- Fix GitHub publishing of PNG preview images by uploading binary files as base64 blobs.
+
 ## 0.2.1
 
 - Refresh README to highlight the v0.2.0 stability, packaging, and engineering improvements.

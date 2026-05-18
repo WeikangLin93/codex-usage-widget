@@ -74,6 +74,46 @@ function New-Blob {
   Invoke-GitHubJson -Method Post -Uri "https://api.github.com/repos/$Owner/$Repo/git/blobs" -Body $body
 }
 
+function Test-BinaryFile {
+  param([string]$Path)
+
+  $binaryExtensions = @(
+    ".exe", ".dll", ".png", ".jpg", ".jpeg", ".gif", ".ico", ".zip", ".7z",
+    ".pdf", ".webp", ".bmp", ".ttf", ".otf"
+  )
+  $extension = [System.IO.Path]::GetExtension($Path).ToLowerInvariant()
+  if ($binaryExtensions -contains $extension) {
+    return $true
+  }
+
+  $stream = [System.IO.File]::OpenRead($Path)
+  try {
+    $buffer = New-Object byte[] ([Math]::Min(4096, [int]$stream.Length))
+    $read = $stream.Read($buffer, 0, $buffer.Length)
+    for ($i = 0; $i -lt $read; $i++) {
+      if ($buffer[$i] -eq 0) { return $true }
+    }
+  } finally {
+    $stream.Dispose()
+  }
+  return $false
+}
+
+function New-BlobFromFile {
+  param(
+    [string]$RelativePath,
+    [string]$FullPath
+  )
+
+  if (Test-BinaryFile $FullPath) {
+    $content = [Convert]::ToBase64String([System.IO.File]::ReadAllBytes($FullPath))
+    return New-Blob -Path $RelativePath -Content $content -Encoding "base64"
+  }
+
+  $content = [System.IO.File]::ReadAllText($FullPath, [System.Text.Encoding]::UTF8)
+  return New-Blob -Path $RelativePath -Content $content -Encoding "utf-8"
+}
+
 function Get-RepositoryFiles {
   $excludeDirs = @(".git", "dist", "__pycache__", ".test_runtime")
 Get-ChildItem -LiteralPath $repoRoot -Recurse -File -Force |
@@ -97,8 +137,7 @@ Write-Host "Creating tree ..."
 $tree = @()
 foreach ($file in Get-RepositoryFiles) {
   $relative = (Get-RelativePath -BasePath $repoRoot -TargetPath $file.FullName).Replace("\", "/")
-  $content = [System.IO.File]::ReadAllText($file.FullName, [System.Text.Encoding]::UTF8)
-  $blob = New-Blob -Path $relative -Content $content
+  $blob = New-BlobFromFile -RelativePath $relative -FullPath $file.FullName
   $tree += @{
     path = $relative
     mode = "100644"
