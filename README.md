@@ -11,6 +11,8 @@ A lightweight **Windows desktop floating widget** for monitoring Codex usage.
   Shows usage for both 5-hour and 7-day windows (used/remaining).
 - 每 60 秒自动刷新  
   Auto-refreshes every 60 seconds.
+- 后台刷新，不因网络请求卡住悬浮窗  
+  Refreshes in the background so the widget UI stays responsive.
 - 支持透明度调节（20%~100%）  
   Adjustable opacity (20%~100%).
 - 支持图层切换（始终置顶 / 普通层级）  
@@ -21,6 +23,10 @@ A lightweight **Windows desktop floating widget** for monitoring Codex usage.
   Game mode (auto full-screen detection + manual force show/hide, manual override has priority).
 - 网络异常时使用本地缓存数据显示  
   Falls back to cached data when network requests fail.
+- 配置与缓存保存到用户 AppData，不污染项目目录  
+  Stores generated config/cache under the user's AppData folder.
+- token 刷新写回前会备份并原子写入认证文件  
+  Backs up and atomically writes auth files when refreshing tokens.
 
 ---
 
@@ -33,9 +39,11 @@ A lightweight **Windows desktop floating widget** for monitoring Codex usage.
 - `启动Codex用量桌显.bat`：一键启动入口（Windows）  
   One-click launcher on Windows.
 - `widget_config.json`：界面配置（自动生成）  
-  UI config file (auto-generated).
+  UI config file (auto-generated, stored in `%LOCALAPPDATA%\CodexUsageWidget`).
 - `last_usage.json`：最近一次成功数据缓存（自动生成）  
-  Last successful usage cache (auto-generated).
+  Last successful usage cache (auto-generated, stored in `%LOCALAPPDATA%\CodexUsageWidget`).
+- `tests/`：核心 Python 逻辑的轻量测试  
+  Lightweight tests for the Python usage parser/cache behavior.
 
 ---
 
@@ -63,12 +71,42 @@ A lightweight **Windows desktop floating widget** for monitoring Codex usage.
 
 ---
 
+## 开发与验证 / Development
+
+运行完整检查：
+
+```powershell
+.\scripts\check.ps1
+```
+
+构建便携 zip 包：
+
+```powershell
+.\scripts\build_release.ps1
+```
+
+如果想把 Python 抓取脚本打成单文件 exe，一起放入 release 包：
+
+```powershell
+.\scripts\build_release.ps1 -InstallPyInstaller
+```
+
+生成的 zip 位于 `dist\CodexUsageWidget-<version>.zip`。如果包内存在 `tools\codex_usage_fetch.exe`，小组件会优先使用它；否则会回退到本机 Python。
+
+CI 会在 GitHub Actions 上运行 `scripts/check.ps1`。推送 `v*` tag 时会自动构建 zip 并发布到 GitHub Releases。
+
+---
+
 ## 说明 / Notes
 
+- 本项目依赖 ChatGPT/Codex 的本地认证文件与非公开 usage 接口；这些结构可能随官方客户端更新而变化。  
+  This project depends on local ChatGPT/Codex auth files and non-public usage endpoints, so it may need updates when the official client changes.
 - 本项目读取本机已有认证文件，不需要在代码里硬编码 token。  
   This project uses local existing auth files and does not require hardcoding tokens in code.
 - 建议不要提交个人认证文件到仓库。  
   Do not commit personal auth credentials to the repository.
+- 如果 access token 过期，脚本会使用 refresh token 刷新，并在写回认证文件前创建 `.bak` 备份。  
+  When the access token expires, the script refreshes it and creates a `.bak` backup before writing the auth file.
 
 ---
 

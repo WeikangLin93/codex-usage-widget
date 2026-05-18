@@ -8,6 +8,11 @@ last_usage.json
 widget_config.json
 widget_start.log
 screen_check*.png
+*.bak
+*.lock
+dist/
+build/
+*.spec
 
 # local debug helpers
 unlock_try.ps1
