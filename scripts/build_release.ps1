@@ -39,6 +39,7 @@ $files = @(
   ".gitignore",
   "CHANGELOG.md",
   "LICENSE",
+  "pyproject.toml",
   "README.md",
   "README.txt",
   "VERSION",
@@ -60,6 +61,7 @@ Get-ChildItem -LiteralPath $repoRoot -Filter "*.bat" | ForEach-Object {
 
 Copy-Item -LiteralPath (Join-Path $repoRoot "tests") -Destination (Join-Path $stageRoot "tests") -Recurse -Force
 Copy-Item -LiteralPath (Join-Path $repoRoot "scripts") -Destination (Join-Path $stageRoot "scripts") -Recurse -Force
+Copy-Item -LiteralPath (Join-Path $repoRoot "docs") -Destination (Join-Path $stageRoot "docs") -Recurse -Force
 
 Compress-Archive -Path (Join-Path $stageRoot "*") -DestinationPath $zipPath -Force
 

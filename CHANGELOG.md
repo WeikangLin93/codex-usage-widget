@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+- Refresh README to highlight the v0.2.0 stability, packaging, and engineering improvements.
+- Add day and night mode preview images for a clearer first impression.
+- Include documentation images in release packages.
+
 ## 0.2.0
 
 - Move generated config and cache to `%LOCALAPPDATA%\CodexUsageWidget`.

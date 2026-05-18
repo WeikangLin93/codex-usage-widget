@@ -3,6 +3,32 @@
 一个用于 **Windows 桌面右下角悬浮显示** 的 Codex 用量小组件。  
 A lightweight **Windows desktop floating widget** for monitoring Codex usage.
 
+## 本次更新 / What's New
+
+- **更清晰的日间/夜间界面**：根据背景亮度自动切换文字、状态和圆环底轨颜色，浅色背景也能读清楚。  
+  Better day/night readability with adaptive text and ring colors.
+- **后台刷新**：网络请求放到后台 Job，不会因为接口慢或网络波动卡住悬浮窗。  
+  Background refresh keeps the widget responsive.
+- **更安全的认证写回**：access token 过期时刷新 token，并在写认证文件前备份、加锁、原子写入。  
+  Safer auth refresh with backup, file lock, and atomic writes.
+- **配置/缓存迁移到 AppData**：运行时文件保存到 `%LOCALAPPDATA%\CodexUsageWidget`，项目目录保持干净。  
+  Runtime config/cache now live under AppData.
+- **更好的发布体验**：新增便携 zip 构建脚本，可选择把抓取脚本打包成 `tools\codex_usage_fetch.exe`。  
+  Release packaging now supports a portable zip with an optional bundled exe.
+- **工程化补齐**：新增测试、检查脚本、版本文件、Changelog、License、GitHub Actions CI 和自动 release workflow。  
+  Added tests, checks, metadata, changelog, license, CI, and release workflow.
+
+---
+
+## 界面预览 / Preview
+
+| 日间模式 / Day mode | 夜间模式 / Night mode |
+| --- | --- |
+| ![Codex Usage Widget day mode](docs/images/widget-day.png) | ![Codex Usage Widget night mode](docs/images/widget-night.png) |
+
+截图为示例数据，仅用于展示界面效果。  
+The previews use sample data and are for UI demonstration only.
+
 ---
 
 ## 功能特点 / Features
@@ -50,16 +76,18 @@ A lightweight **Windows desktop floating widget** for monitoring Codex usage.
 ## 使用方法 / How to Use
 
 ### 中文
-1. 确保你已在本机完成 Codex 登录（本项目会读取本机认证信息）。
-2. 双击 `启动Codex用量桌显.bat`。
-3. 右下角出现悬浮窗后，可右键调整透明度与图层。
-4. 双击悬浮窗可关闭。
+1. 从 [Releases](https://github.com/WeikangLin93/codex-usage-widget/releases) 下载 `CodexUsageWidget-*.zip` 并解压。
+2. 确保你已在本机完成 Codex 登录（本项目会读取本机认证信息）。
+3. 双击 `启动Codex用量桌显.bat`。
+4. 右下角出现悬浮窗后，可右键调整透明度与图层。
+5. 双击悬浮窗可关闭。
 
 ### English
-1. Make sure Codex is already authenticated on your machine.
-2. Double-click `启动Codex用量桌显.bat`.
-3. Right-click the widget to change opacity and layer mode.
-4. Double-click the widget to close it.
+1. Download `CodexUsageWidget-*.zip` from [Releases](https://github.com/WeikangLin93/codex-usage-widget/releases) and unzip it.
+2. Make sure Codex is already authenticated on your machine.
+3. Double-click `启动Codex用量桌显.bat`.
+4. Right-click the widget to change opacity and layer mode.
+5. Double-click the widget to close it.
 
 ---
 
