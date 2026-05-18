@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.3
+
+- Clarify that browser-only ChatGPT login is not enough; the widget needs local Codex auth files.
+
 ## 0.2.2
 
 - Fix GitHub publishing of PNG preview images by uploading binary files as base64 blobs.

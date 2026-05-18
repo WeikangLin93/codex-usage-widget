@@ -22,7 +22,8 @@ Codex 用量桌面显示（Windows）
 配置和缓存位置：%LOCALAPPDATA%\CodexUsageWidget
 
 使用方法：
-1. 先确认你已登录 Codex
+1. 先确认你已在本机完成 Codex CLI / Codex 桌面相关环境登录，并生成 ~/.codex/auth.json 或 ~/.hermes/auth.json
+   仅网页版 ChatGPT 登录通常无法使用，因为本工具读取本地认证文件，不读取浏览器 cookie
 2. 双击“启动Codex用量桌显.bat”
 3. 右下角会出现悬浮窗：
    - 5h：已用X% / 剩余Y%
@@ -33,8 +34,9 @@ Codex 用量桌面显示（Windows）
 
 说明：
 1. 本工具依赖本机已有 Codex/ChatGPT 登录信息。
-2. 如果 access token 过期，脚本会刷新 token，并在写回认证文件前生成 .bak 备份。
-3. usage 接口不是公开稳定 API，官方客户端更新后可能需要跟着调整。
+2. 这里的登录信息是 ~/.codex/auth.json 或 ~/.hermes/auth.json，不是浏览器网页登录 cookie。
+3. 如果 access token 过期，脚本会刷新 token，并在写回认证文件前生成 .bak 备份。
+4. usage 接口不是公开稳定 API，官方客户端更新后可能需要跟着调整。
 
 开发/打包：
 1. 运行检查：powershell -ExecutionPolicy Bypass -File scripts\check.ps1

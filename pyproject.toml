@@ -1,6 +1,6 @@
 [project]
 name = "codex-usage-widget"
-version = "0.2.2"
+version = "0.2.3"
 description = "Windows desktop floating widget for monitoring Codex usage."
 readme = "README.md"
 requires-python = ">=3.10"
